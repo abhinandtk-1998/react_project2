@@ -1,0 +1,4 @@
+Link {
+    text-decoration: none;  /* Remove underline */
+    color: inherit;         /* Inherit color from parent or specify another color */
+  }
