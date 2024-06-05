@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import {
     MDBContainer,
     MDBInput,
@@ -11,13 +11,54 @@ import {
     MDBCardBody
   }
   from 'mdb-react-ui-kit';
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from "react-router-dom";
 
+
+
+
+
+
 function Login() {
+
+  const useref = useRef(null)
+  const passref = useRef(null)
+
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+
+  function loginSubmit(){
+
+    console.log(username, password)
+
+    
+  
+    if(username && password){
+      let data = {
+        "password":password,
+        "username":username
+      }
+      const headers = {
+        'Content-Type': "application/json",
+      }
+      axios.post("http://127.0.0.1:8000/login/", data)
+          .then((res) => console.log(res.data))
+          .catch((err) => {
+            console.log(err)
+          })
+    }
+    else{
+      alert("Enter username and password")
+    }
+  
+    
+  }
+
+
   return (
     <>
 
@@ -42,17 +83,17 @@ function Login() {
 
 
 
-    {/* <MDBContainer className="p-3 my-5 d-flex flex-column w-50" >
+    <MDBContainer className="p-3 my-5 d-flex flex-column w-50" >
 
-      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email'/>
-      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password'/>
+      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='text' onChange={(e) => {setUsername(e.target.value)}}/>
+      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' onChange={(e) => {setPassword(e.target.value)}}/>
 
       <div className="d-flex justify-content-between mx-3 mb-4">
         <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
         <a href="!#">Forgot password?</a>
       </div>
 
-      <MDBBtn className="mb-4">Sign in</MDBBtn>
+      <MDBBtn className="mb-4" onClick={loginSubmit}>Sign in</MDBBtn>
 
       <div className="text-center">
         <p>Not a member? <Link to='/signup'>Register</Link></p>
@@ -78,11 +119,11 @@ function Login() {
         </div>
       </div>
 
-    </MDBContainer> */}
+    </MDBContainer>
 
 
 
-  <MDBContainer fluid>
+  {/* <MDBContainer fluid>
 
   <MDBRow className='d-flex justify-content-center align-items-center h-100'>
   <MDBCol col='12'>
@@ -93,11 +134,11 @@ function Login() {
         <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
         <p className="text-white-50 mb-5">Please enter your login and password!</p>
 
-        <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='email' size="lg"/>
-        <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg"/>
+        <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='text' size="lg" />
+        <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg" />
 
         <p className="small mb-3 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
-        <MDBBtn outline className='mx-2 px-5' color='white' size='lg'>
+        <MDBBtn outline className='mx-2 px-5' color='white' size='lg' >
           Login
         </MDBBtn>
 
@@ -125,7 +166,7 @@ function Login() {
   </MDBCol>
   </MDBRow>
 
-  </MDBContainer>
+  </MDBContainer> */}
 
 
 
