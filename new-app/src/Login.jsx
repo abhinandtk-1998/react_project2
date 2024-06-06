@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react';
 import {
     MDBContainer,
     MDBInput,
@@ -11,7 +11,7 @@ import {
     MDBCardBody
   }
   from 'mdb-react-ui-kit';
-import axios from 'axios'
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -25,22 +25,22 @@ import { Link } from "react-router-dom";
 
 function Login() {
 
-  const useref = useRef(null)
-  const passref = useRef(null)
+  const usernameref = useRef(null)
+  const passwordref = useRef(null)
 
-  const [username, setUsername] = useState()
-  const [password, setPassword] = useState()
+  // const [username, setUsername] = useState()
+  // const [password, setPassword] = useState()
 
   function loginSubmit(){
 
-    console.log(username, password)
+    // console.log(username, password)
 
     
   
-    if(username && password){
+    if(usernameref.current.value && passwordref.current .value){
       let data = {
-        "password":password,
-        "username":username
+        "password":passwordref.current .value,
+        "username":usernameref.current.value
       }
       const headers = {
         'Content-Type': "application/json",
@@ -85,8 +85,8 @@ function Login() {
 
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50" >
 
-      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='text' onChange={(e) => {setUsername(e.target.value)}}/>
-      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' onChange={(e) => {setPassword(e.target.value)}}/>
+      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='text' ref={usernameref}/>
+      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' ref={passwordref}/>
 
       <div className="d-flex justify-content-between mx-3 mb-4">
         <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
