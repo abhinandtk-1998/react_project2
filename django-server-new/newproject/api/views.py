@@ -34,18 +34,28 @@ def registerview(request):
 
 @api_view(['POST'])
 def loginview(request):
-    # serialiser=UserLogInSerialisers(data=request.data)
-    # if serialiser.is_valid():
-    uname = request.data.get('username')
-    pword = request.data.get('password')
-    user = authenticate(username=uname,password=pword)
-    print(user)
-    if user:
-        token = Token.objects.get(user=user)
-        return JsonResponse({'token':token.key})
-    else:
-        # return Response(serialiser.errors)
-        return Response({'error': 'Invalid cridential'})
+    serialiser=UserLogInSerialisers(data=request.data)
+    if serialiser.is_valid():
+        uname = request.data.get('username')
+        pword = request.data.get('password')
+        user = authenticate(username=uname,password=pword)
+        print(user)
+        if user:
+            token = Token.objects.get(user=user)
+            return JsonResponse({'token':token.key})
+        else:
+            return Response(serialiser.errors)
+            # return Response({'error': 'Invalid cridential'})
+
+
+@api_view(['GET'])
+def getdata(request):
+
+    user = developers.objects.get(user=request.user)
+
+    return JsonResponse(user)
+
+
 
 
 

@@ -2,10 +2,11 @@ import React from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Home.css"
 
 function Home() {
+    
   return (
     <>
         <Navbar expand="lg" className="bg-body-tertiary" >
@@ -23,7 +24,7 @@ function Home() {
         </Navbar>
 
         <div >
-
+            
         </div>
 
     </>

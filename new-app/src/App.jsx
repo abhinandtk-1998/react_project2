@@ -5,6 +5,7 @@ import Login from './Login';
 import Home from './Home';
 import Signup from './Signup';
 import Developer from './Developer';
+import LoginRoute from './LoginRoute';
 
 function App() {
   return (
@@ -14,8 +15,12 @@ function App() {
         <Route path="/home" element = {<Home />} ></Route>
         <Route path="/login" element= {<Login />} ></Route>
         <Route path="/signup" element= {<Signup />} ></Route>
+
+        <Route element={<LoginRoute />}>
+        <Route path="/developer" element= {<Developer />} ></Route>
+        </Route>
         
-        <Route path="/developerhome" element= {<Developer />} ></Route>
+        
 
       </Routes>
       </BrowserRouter>

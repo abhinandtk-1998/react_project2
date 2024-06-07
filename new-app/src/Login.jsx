@@ -16,7 +16,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import config from "./config"
 
 
 
@@ -25,8 +26,12 @@ import { Link } from "react-router-dom";
 
 function Login() {
 
+  const navigate = useNavigate()
+
   const usernameref = useRef(null)
   const passwordref = useRef(null)
+
+  console.log(config.baseurl)
 
   // const [username, setUsername] = useState()
   // const [password, setPassword] = useState()
@@ -45,8 +50,11 @@ function Login() {
       const headers = {
         'Content-Type': "application/json",
       }
-      axios.post("http://127.0.0.1:8000/login/", data)
-          .then((res) => console.log(res.data))
+      axios.post(`${config.baseurl}login/`, data)
+          .then((res) => {
+            localStorage.setItem('auth_token',res.data.token)
+            navigate('/developer')
+          })
           .catch((err) => {
             console.log(err)
           })
