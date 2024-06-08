@@ -9,6 +9,8 @@ from .serializers import UserSerialisers, UserLogInSerialisers
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.core import serializers
+import json
 
 
 @api_view(['POST'])
@@ -42,18 +44,21 @@ def loginview(request):
         print(user)
         if user:
             token = Token.objects.get(user=user)
-            return JsonResponse({'token':token.key})
+            cuser = CustomUser.objects.get(username=uname)
+            userdetails = developers.objects.get(user=cuser)
+            
+            # Serialize the userdetails object into JSON-compatible format
+            user_details_json = serializers.serialize('json', [userdetails])
+
+            # Convert the serialized data into a Python dictionary
+            user_details_dict = json.loads(user_details_json)[0]['fields']
+
+            return JsonResponse({'token':token.key, 'user':user_details_dict})
         else:
             return Response(serialiser.errors)
             # return Response({'error': 'Invalid cridential'})
 
 
-@api_view(['GET'])
-def getdata(request):
-
-    user = developers.objects.get(user=request.user)
-
-    return JsonResponse(user)
 
 
 
