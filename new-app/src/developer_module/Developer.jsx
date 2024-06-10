@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import Header from './Header'
-import Sidebar from './Sidebar'
-import Dashboard from './Dashboard'
+import Header from '../Header'
+import Sidebar from '../Sidebar'
+import Dashboard from '../Dashboard'
 import './Developer.css'
 
 function Developer() {
@@ -37,6 +37,7 @@ function Developer() {
     {/* <div>Developer</div>
     <button onClick={() => {localStorage.removeItem('auth_token');navigate('/login')}}>logout</button>
     <button onClick={getdata}>data get</button> */}
+
 
       <Header OpenSidebar={OpenSidebar}/>
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>

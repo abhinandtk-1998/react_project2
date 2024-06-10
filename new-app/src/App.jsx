@@ -4,8 +4,10 @@ import {BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router
 import Login from './Login';
 import Home from './Home';
 import Signup from './Signup';
-import Developer from './Developer';
+import Developer from './developer_module/Developer';
 import LoginRoute from './LoginRoute';
+import Teamlead from './teamlead_module/Teamlead';
+import Admin from './admin_module/Admin';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
 
         <Route element={<LoginRoute />}>
         <Route path="/developer" element= {<Developer />} ></Route>
+        <Route path="/teamlead" element= {<Teamlead />} ></Route>
+        <Route path="/admin" element= {<Admin />} ></Route>
         </Route>
         
         

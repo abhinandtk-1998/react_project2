@@ -45,15 +45,31 @@ def loginview(request):
         if user:
             token = Token.objects.get(user=user)
             cuser = CustomUser.objects.get(username=uname)
-            userdetails = developers.objects.get(user=cuser)
             
-            # Serialize the userdetails object into JSON-compatible format
-            user_details_json = serializers.serialize('json', [userdetails])
+            if cuser.is_staff == 1:
+                user_details_dict = {'token':token.key,'first_name': cuser.first_name, 'last_name':cuser.last_name, 'username': cuser.username, 
+                                 'email':cuser.email,'is_staff':cuser.is_staff}
+                return JsonResponse(user_details_dict)
 
-            # Convert the serialized data into a Python dictionary
-            user_details_dict = json.loads(user_details_json)[0]['fields']
+            userdetails = developers.objects.get(user=cuser)
 
-            return JsonResponse({'token':token.key, 'user':user_details_dict})
+            print(cuser.first_name)
+            print(cuser.last_name)
+            print(userdetails.address)
+
+            # user_details_dict = {}
+            
+            # # Serialize the userdetails object into JSON-compatible format
+            # user_details_json = serializers.serialize('json', [userdetails])
+
+            # # Convert the serialized data into a Python dictionary
+            # user_details_dict = json.loads(user_details_json)[0]['fields']
+
+            user_details_dict = {'token':token.key,'first_name': cuser.first_name, 'last_name':cuser.last_name, 'username': cuser.username, 
+                                 'email':cuser.email,'is_staff':cuser.is_staff,'address':userdetails.address, 'course': userdetails.course,
+                                 'department' : userdetails.department}
+            
+            return JsonResponse(user_details_dict)
         else:
             return Response(serialiser.errors)
             # return Response({'error': 'Invalid cridential'})
