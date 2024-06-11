@@ -48,7 +48,7 @@ def loginview(request):
             
             if cuser.is_staff == 1:
                 user_details_dict = {'token':token.key,'first_name': cuser.first_name, 'last_name':cuser.last_name, 'username': cuser.username, 
-                                 'email':cuser.email,'is_staff':cuser.is_staff}
+                                 'email':cuser.email,'is_staff':cuser.is_staff,'user_type':cuser.user_type}
                 return JsonResponse(user_details_dict)
 
             userdetails = developers.objects.get(user=cuser)
@@ -66,7 +66,7 @@ def loginview(request):
             # user_details_dict = json.loads(user_details_json)[0]['fields']
 
             user_details_dict = {'token':token.key,'first_name': cuser.first_name, 'last_name':cuser.last_name, 'username': cuser.username, 
-                                 'email':cuser.email,'is_staff':cuser.is_staff,'address':userdetails.address, 'course': userdetails.course,
+                                 'email':cuser.email,'is_staff':cuser.is_staff,'user_type':cuser.user_type,'address':userdetails.address, 'course': userdetails.course,
                                  'department' : userdetails.department}
             
             return JsonResponse(user_details_dict)

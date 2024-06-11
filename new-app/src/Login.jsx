@@ -53,11 +53,11 @@ function Login() {
       axios.post(`${config.baseurl}login/`, data)
           .then((res) => {
             localStorage.setItem('auth_token',res.data.token)
-            console.log(res.data)
-            if(res.data.is_staff == 1){
-              navigate('/admin', {'data':res.data})
+            console.log(res)
+            if(res.data.is_staff === 1){
+              navigate('/admin', {'data':res})
             }else{
-              if(res.data.user_type == 1){
+              if(res.data.user_type === '1'){
                 navigate('/developer',{'data':res.data})
               }else{
                 navigate('/teamlead',{'data':res.data})

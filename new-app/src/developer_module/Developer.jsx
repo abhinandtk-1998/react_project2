@@ -33,19 +33,21 @@ function Developer() {
 
 
   return (
-    <>
+    
+
+
+  <div className='grid-container'>
+    <Header OpenSidebar={OpenSidebar}/>
+    <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
+    <Dashboard />
     {/* <div>Developer</div>
     <button onClick={() => {localStorage.removeItem('auth_token');navigate('/login')}}>logout</button>
     <button onClick={getdata}>data get</button> */}
-
-
-      <Header OpenSidebar={OpenSidebar}/>
-      <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
-      {/* <Dashboard /> */}
+  </div>
 
 
 
-    </>
+
     
   )
 }

@@ -13,6 +13,7 @@ class developers(models.Model):
     course = models.CharField(max_length=255,null=True)
     certificate = models.FileField(upload_to='uploads/',null=True,blank=True)
     department = models.CharField(max_length=255,null=True)
+    status = models.CharField(max_length=255, default=0)
 
 
 

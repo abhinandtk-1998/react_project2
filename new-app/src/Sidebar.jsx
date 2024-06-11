@@ -3,42 +3,43 @@ import
 {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
   BsListCheck, BsMenuButtonWideFill, BsFillGearFill}
  from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
 function Sidebar({openSidebarToggle, OpenSidebar}) {
   return (
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
         <div className='sidebar-title'>
             <div className='sidebar-brand'>
-                <BsCart3  className='icon_header'/> SHOP
+                ADMIN
             </div>
             <span className='icon close_icon' onClick={OpenSidebar}>X</span>
         </div>
 
         <ul className='sidebar-list'>
             <li className='sidebar-list-item'>
-                <a href="">
+                <Link to="">
                     <BsGrid1X2Fill className='icon'/> Dashboard
-                </a>
+                </Link>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
-                    <BsFillArchiveFill className='icon'/> Products
-                </a>
+                <Link to="">
+                    <BsFillArchiveFill className='icon'/> Requests
+                </Link>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <Link to="">
                     <BsFillGrid3X3GapFill className='icon'/> Categories
-                </a>
+                </Link>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <Link to="">
                     <BsPeopleFill className='icon'/> Customers
-                </a>
+                </Link>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <Link to="">
                     <BsListCheck className='icon'/> Inventory
-                </a>
+                </Link>
             </li>
             <li className='sidebar-list-item'>
                 <a href="">
