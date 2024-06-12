@@ -74,6 +74,20 @@ def loginview(request):
             return Response(serialiser.errors)
             # return Response({'error': 'Invalid cridential'})
 
+@api_view(['GET'])
+def reg_details(request):
+
+    list = {}
+
+    duser = developers.objects.filter(status = 0)
+    i = 0
+    for d in duser:
+        list[i] = [i, d.user.first_name, d.user.last_name, d.user.email, d.department, d.course, d.id,]
+        i += 1
+
+
+    return JsonResponse(list)
+
 
 
 

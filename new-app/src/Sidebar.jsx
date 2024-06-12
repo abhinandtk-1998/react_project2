@@ -22,7 +22,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to="">
+                <Link to="/requests">
                     <BsFillArchiveFill className='icon'/> Requests
                 </Link>
             </li>

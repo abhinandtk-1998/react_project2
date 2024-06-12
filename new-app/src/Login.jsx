@@ -54,7 +54,7 @@ function Login() {
           .then((res) => {
             localStorage.setItem('auth_token',res.data.token)
             console.log(res)
-            if(res.data.is_staff === 1){
+            if(res.data.is_staff === true ){
               navigate('/admin', {'data':res})
             }else{
               if(res.data.user_type === '1'){

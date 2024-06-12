@@ -8,6 +8,7 @@ import Developer from './developer_module/Developer';
 import LoginRoute from './LoginRoute';
 import Teamlead from './teamlead_module/Teamlead';
 import Admin from './admin_module/Admin';
+import Requests from './admin_module/Requests';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/developer" element= {<Developer />} ></Route>
         <Route path="/teamlead" element= {<Teamlead />} ></Route>
         <Route path="/admin" element= {<Admin />} ></Route>
+        <Route path="/requests" element= {<Requests />} ></Route> 
         </Route>
         
         

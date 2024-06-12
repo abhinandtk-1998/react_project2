@@ -1,20 +1,26 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import Header from '../Header'
+import Sidebar from '../Sidebar'
+import Dashboard from '../Dashboard'
+import './Admin.css'
 
 function Admin() {
 
-  const location = useLocation();
-  const { state } = location;
+  const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
-  console.log(state);
+  const OpenSidebar = () => {
+    setOpenSidebarToggle(!openSidebarToggle)
+  }
 
 
   return (
-    <>
-    <div>Admin </div>
-    <h1>Admin Page</h1>
-    <p>Received data: {JSON.stringify(state)}</p>
-    </>
+    <div className='grid-container'>
+      <Header OpenSidebar={OpenSidebar}/>
+      <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
+      <Dashboard />
+    </div>
     
   )
 }
