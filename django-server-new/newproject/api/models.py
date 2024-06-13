@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     user_type = models.CharField(default=1, max_length=10)
+    
 
 
 class developers(models.Model):

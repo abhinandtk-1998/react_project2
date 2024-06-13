@@ -1,13 +1,17 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import config from "./config"
+import Button from 'react-bootstrap/Button';
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 
 function Requests_data() {
 
-  const [items, setItems] = useState(false)
+  const navigate = useNavigate()
+
+  // const [items, setItems] = useState(false)
 
   const tableStyle = {
     width: '100px',
@@ -18,13 +22,14 @@ function Requests_data() {
     border: '1px solid black',
     padding: '8px',
     textAlign: 'left',
-    fontSize: '20px',
+    fontSize: '30px',
+    textAlign:'center'
   };
 
   const tdStyle = {
     border: '1px solid black',
     padding: '8px',
-    fontSize: '14px',
+    fontSize: '20px',
   };
 
   const sl_no_width = {
@@ -48,17 +53,98 @@ function Requests_data() {
   }
 
   const action_width = {
-    width: '300px'
+    width: '300px',
   }
 
-  axios.get(`${config.baseurl}reg_details/`)
-  .then((res) => {
-    setItems(res)
-    console.log(res)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+  const action_content_width = {
+    textAlign:'center'
+  }
+
+
+  const [members, setMembers] = useState([]);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //     const token = localStorage.getItem('token');
+
+  //     const fetchData = async () => {
+  //         try {
+  //             const response = await axios.get('http://127.0.0.1:8000/get_user_status/', {
+  //                 headers: {
+  //                     'Authorization': Token ${token}
+  //                 }
+  //             });
+  //             setPendingCount(response.data.pending_count || 0);
+  //         } catch (error) {
+  //             setError('An error occurred while fetching data');
+  //         }
+  //     };
+
+  //     fetchData();
+  // }, []);
+
+  useEffect(() => {
+      axios.get(`${config.baseurl}reg_details/`)
+          .then(response => {
+              setMembers(response.data);
+              console.log(response.data);
+          })
+          .catch(error => {
+              console.error('Error fetching member details:', error);
+          });
+  }, []);
+
+
+  const approve_developer = (id) => {
+
+    let data = {
+      "id":id
+    }
+
+    axios.get(`${config.baseurl}approve_dev/`,data)
+    .then((res) => {
+      console.log(res)
+      navigate('/requests_data')
+
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+
+
+  };
+
+
+
+  const disapprove_developer = (id) => {
+
+    let data = {
+      "id":id
+    }
+
+    axios.get(`${config.baseurl}disapprove_dev/`,data)
+    .then((res) => {
+      console.log(res)
+      navigate('/requests_data')
+
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+
+
+  };
+
+
+
+
+
+
+  const baseURL = 'http://127.0.0.1:8000';
+
 
 
 
@@ -76,19 +162,19 @@ function Requests_data() {
           <th style={{...thStyle, ...action_width}}>Action</th>
         </thead>
         <tbody>
-        {/* {Object.keys(items).map(key => {
-          const [id, firstName, lastName, email, department, course] = items[key];
-          return (
-            <tr key={id}>
-              <td>{id}</td>
-              <td>{firstName}</td>
-              <td>{lastName}</td>
-              <td>{email}</td>
-              <td>{department}</td>
-              <td>{course}</td>
+         {
+         members.map((member, index) => (
+            <tr key={member.id}>
+              <td style={tdStyle}>{index + 1}</td>
+              <td style={tdStyle}>{member.user.first_name} {member.user.last_name}</td>
+              <td style={tdStyle}>{member.user.email}</td>
+              <td style={tdStyle}>{member.department}</td>
+              <td style={tdStyle}>{member.course}</td>
+              <td style={{...tdStyle, ...action_content_width}}><Button variant="success" onClick={approve_developer(member.id)}>Approve</Button>{'  '} 
+              <Button variant="danger" onClick={disapprove_developer(member.id)}>Disapprove</Button>{' '}</td>
+              
             </tr>
-          );
-        })} */}
+          ))}
         </tbody>
       </table>
 

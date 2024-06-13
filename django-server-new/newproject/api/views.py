@@ -5,12 +5,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from .models import CustomUser, developers
-from .serializers import UserSerialisers, UserLogInSerialisers
+from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.core import serializers
 import json
+
 
 
 @api_view(['POST'])
@@ -74,19 +75,52 @@ def loginview(request):
             return Response(serialiser.errors)
             # return Response({'error': 'Invalid cridential'})
 
+# @api_view(['GET'])
+# def reg_details(request):
+
+#     list = {}
+
+#     duser = developers.objects.filter(status = 0)
+#     i = 0
+#     for d in duser:
+#         list[i] = [i, d.user.first_name, d.user.last_name, d.user.email, d.department, d.course, d.id,]
+#         i += 1
+
+#     print(list)
+
+
+#     return JsonResponse(list)
+
+# @permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def reg_details(request):
+    reg_developers = developers.objects.filter(status=0)
+    serializer = RegSerializer(reg_developers, many=True)
+    print(serializer.data)
+    return JsonResponse(serializer.data, safe=False)
 
-    list = {}
+@api_view(['POST'])
+def approve_dev(request):
+    id = request.data.get('id')
 
-    duser = developers.objects.filter(status = 0)
-    i = 0
-    for d in duser:
-        list[i] = [i, d.user.first_name, d.user.last_name, d.user.email, d.department, d.course, d.id,]
-        i += 1
+    dev = developers.objects.get(id=id)
+    dev.status = 1
+    dev.save()
 
+    return JsonResponse({'success': 'Developer registration approved successfully'})
 
-    return JsonResponse(list)
+@api_view(['POST'])
+def disapprove_dev(request):
+    id = request.data.get('id')
+
+    dev = developers.objects.get(id=id)
+    cuser = CustomUser.objects.get(user=dev)
+
+    dev.delete()
+    cuser.delete()
+
+    return JsonResponse({'success': 'Developer registration disapproved successfully'})
+
 
 
 
