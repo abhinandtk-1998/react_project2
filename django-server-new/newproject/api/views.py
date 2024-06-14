@@ -96,7 +96,6 @@ def loginview(request):
 def reg_details(request):
     reg_developers = developers.objects.filter(status=0)
     serializer = RegSerializer(reg_developers, many=True)
-    print(serializer.data)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
@@ -109,17 +108,19 @@ def approve_dev(request):
 
     return JsonResponse({'success': 'Developer registration approved successfully'})
 
-@api_view(['POST'])
+@api_view(['DELETE'])
 def disapprove_dev(request):
-    id = request.data.get('id')
+    id = request.GET.get('id')
 
-    dev = developers.objects.get(id=id)
-    cuser = CustomUser.objects.get(user=dev)
+    if id:
+    
+        dev = developers.objects.get(id=id)
+        cuser = CustomUser.objects.get(id=dev.user.id)
 
-    dev.delete()
-    cuser.delete()
+        dev.delete()
+        cuser.delete()
 
-    return JsonResponse({'success': 'Developer registration disapproved successfully'})
+        return JsonResponse({'success': 'Developer registration disapproved successfully'})
 
 
 

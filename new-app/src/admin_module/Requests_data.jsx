@@ -102,10 +102,10 @@ function Requests_data() {
       "id":id
     }
 
-    axios.get(`${config.baseurl}approve_dev/`,data)
+    axios.post(`${config.baseurl}approve_dev/`,data)
     .then((res) => {
       console.log(res)
-      navigate('/requests_data')
+      navigate(0);
 
     })
     .catch((err) => {
@@ -123,11 +123,12 @@ function Requests_data() {
     let data = {
       "id":id
     }
+    console.log(id)
 
-    axios.get(`${config.baseurl}disapprove_dev/`,data)
+    axios.delete(`${config.baseurl}disapprove_dev/?id=${id}`)
     .then((res) => {
       console.log(res)
-      navigate('/requests_data')
+      navigate(0);
 
     })
     .catch((err) => {
@@ -170,8 +171,10 @@ function Requests_data() {
               <td style={tdStyle}>{member.user.email}</td>
               <td style={tdStyle}>{member.department}</td>
               <td style={tdStyle}>{member.course}</td>
-              <td style={{...tdStyle, ...action_content_width}}><Button variant="success" onClick={approve_developer(member.id)}>Approve</Button>{'  '} 
-              <Button variant="danger" onClick={disapprove_developer(member.id)}>Disapprove</Button>{' '}</td>
+              <td style={{...tdStyle, ...action_content_width}}>
+                <Button variant="success">Approve</Button>{'  '} 
+                <Button variant="danger" onClick={() => disapprove_developer(member.id)}>Disapprove</Button>{' '}
+              </td>
               
             </tr>
           ))}
