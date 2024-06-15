@@ -98,15 +98,22 @@ def reg_details(request):
     serializer = RegSerializer(reg_developers, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def approve_dev(request):
-    id = request.data.get('id')
+    id = request.GET.get('id')
 
-    dev = developers.objects.get(id=id)
-    dev.status = 1
-    dev.save()
+    if id:
 
-    return JsonResponse({'success': 'Developer registration approved successfully'})
+        dev = developers.objects.get(id=id)
+        dev.status = 1
+        dev.save()
+
+        return JsonResponse({'success': 'Developer registration approved successfully'})
+
+    else:
+        return JsonResponse({'error': 'something went wrong'})
+
+
 
 @api_view(['DELETE'])
 def disapprove_dev(request):
@@ -121,6 +128,9 @@ def disapprove_dev(request):
         cuser.delete()
 
         return JsonResponse({'success': 'Developer registration disapproved successfully'})
+
+    else:
+        return JsonResponse({'error': 'An Error occured'})
 
 
 

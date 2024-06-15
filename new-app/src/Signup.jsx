@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Spinner, Alert } from 'react-bootstrap';
 import {
   MDBBtn,
@@ -23,6 +23,8 @@ import axios from 'axios';
 
 function Signup() {
 
+  const navigate = useNavigate()
+
 
   const first_nameref = useRef(null)
   const last_nameref = useRef(null)
@@ -38,6 +40,8 @@ function Signup() {
   // const [password, setPassword] = useState()
 
   function signupSubmit(){
+
+    
 
 
     
@@ -79,6 +83,8 @@ function Signup() {
       }
       axios.post("http://127.0.0.1:8000/register/", data, headers)
           .then((res) => console.log(res.data))
+          navigate('/login')
+
           .catch((err) => {
             console.log(err)
           })

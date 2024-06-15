@@ -24,6 +24,9 @@ function App() {
         <Route path="/teamlead" element= {<Teamlead />} ></Route>
         <Route path="/admin" element= {<Admin />} ></Route>
         <Route path="/requests" element= {<Requests />} ></Route> 
+        <Route path="/teamlead_list" element= {<TLlist />} ></Route> 
+        <Route path="/developers_list" element= {<DeveloperList />} ></Route> 
+        
         </Route>
         
         

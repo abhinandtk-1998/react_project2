@@ -27,13 +27,13 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to="">
-                    <BsFillGrid3X3GapFill className='icon'/> Categories
+                <Link to="/teamleads_list">
+                    <BsFillGrid3X3GapFill className='icon'/> Team Leads
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to="">
-                    <BsPeopleFill className='icon'/> Customers
+                <Link to="/developers_list">
+                    <BsPeopleFill className='icon'/> Developers
                 </Link>
             </li>
             <li className='sidebar-list-item'>

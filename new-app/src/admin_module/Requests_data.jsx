@@ -102,7 +102,7 @@ function Requests_data() {
       "id":id
     }
 
-    axios.post(`${config.baseurl}approve_dev/`,data)
+    axios.put(`${config.baseurl}approve_dev/?id=${id}`)
     .then((res) => {
       console.log(res)
       navigate(0);
@@ -172,7 +172,7 @@ function Requests_data() {
               <td style={tdStyle}>{member.department}</td>
               <td style={tdStyle}>{member.course}</td>
               <td style={{...tdStyle, ...action_content_width}}>
-                <Button variant="success">Approve</Button>{'  '} 
+                <Button variant="success" onClick={() => approve_developer(member.id)}>Approve</Button>{'  '} 
                 <Button variant="danger" onClick={() => disapprove_developer(member.id)}>Disapprove</Button>{' '}
               </td>
               
