@@ -27,7 +27,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to="/teamleads_list">
+                <Link to="/teamlead_list">
                     <BsFillGrid3X3GapFill className='icon'/> Team Leads
                 </Link>
             </li>
@@ -38,10 +38,10 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
             </li>
             <li className='sidebar-list-item'>
                 <Link to="">
-                    <BsListCheck className='icon'/> Inventory
+                    <BsListCheck className='icon'/> Projects
                 </Link>
             </li>
-            <li className='sidebar-list-item'>
+            {/* <li className='sidebar-list-item'>
                 <a href="">
                     <BsMenuButtonWideFill className='icon'/> Reports
                 </a>
@@ -50,7 +50,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 <a href="">
                     <BsFillGearFill className='icon'/> Setting
                 </a>
-            </li>
+            </li> */}
         </ul>
     </aside>
   )

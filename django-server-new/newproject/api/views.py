@@ -131,6 +131,56 @@ def disapprove_dev(request):
 
     else:
         return JsonResponse({'error': 'An Error occured'})
+    
+
+@api_view(['GET'])
+def dev_details(request):
+    user_list = CustomUser.objects.filter(user_type = 1)
+    developers_details = developers.objects.filter(status=1, user__in=user_list)
+    serializer = RegSerializer(developers_details, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['PUT'])
+def dev_to_tl(request):
+    id = request.GET.get('id')
+
+    if id:
+
+        dev = developers.objects.get(id=id)
+        cuser = CustomUser.objects.get(id = dev.user.id)
+        cuser.user_type = 2
+        cuser.save()
+
+        return JsonResponse({'success': 'Developer Promoted as TL'})
+
+    else:
+        return JsonResponse({'error': 'something went wrong'})
+    
+@api_view(['PUT'])
+def tl_to_dev(request):
+    id = request.GET.get('id')
+
+    if id:
+
+        dev = developers.objects.get(id=id)
+        cuser = CustomUser.objects.get(id = dev.user.id)
+        cuser.user_type = 1
+        cuser.save()
+
+        return JsonResponse({'success': 'TL converted  as Developer'})
+
+    else:
+        return JsonResponse({'error': 'something went wrong'})
+    
+
+@api_view(['GET'])
+def tl_details(request):
+    user_list = CustomUser.objects.filter(user_type = 2)
+    developers_details = developers.objects.filter(status=1, user__in=user_list)
+    print(developers_details)
+    serializer = RegSerializer(developers_details, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 

@@ -82,12 +82,13 @@ function Signup() {
         'Content-Type': "application/json",
       }
       axios.post("http://127.0.0.1:8000/register/", data, headers)
-          .then((res) => console.log(res.data))
-          navigate('/login')
+          .then((res) => console.log(res.data),navigate('/login'))
 
           .catch((err) => {
             console.log(err)
           })
+
+          
     }
     else{
       alert("Enter all field")

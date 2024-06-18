@@ -9,6 +9,8 @@ import LoginRoute from './LoginRoute';
 import Teamlead from './teamlead_module/Teamlead';
 import Admin from './admin_module/Admin';
 import Requests from './admin_module/Requests';
+import DeveloperList from './admin_module/DeveloperList'; 
+import TLlist from './admin_module/TLlist';
 
 function App() {
   return (
@@ -20,12 +22,12 @@ function App() {
         <Route path="/signup" element= {<Signup />} ></Route>
 
         <Route element={<LoginRoute />}>
-        <Route path="/developer" element= {<Developer />} ></Route>
-        <Route path="/teamlead" element= {<Teamlead />} ></Route>
-        <Route path="/admin" element= {<Admin />} ></Route>
-        <Route path="/requests" element= {<Requests />} ></Route> 
-        <Route path="/teamlead_list" element= {<TLlist />} ></Route> 
-        <Route path="/developers_list" element= {<DeveloperList />} ></Route> 
+          <Route path="/developer" element= {<Developer />} ></Route>
+          <Route path="/teamlead" element= {<Teamlead />} ></Route>
+          <Route path="/admin" element= {<Admin />} ></Route>
+          <Route path="/requests" element= {<Requests />} ></Route> 
+          <Route path="/teamlead_list" element= {<TLlist />} ></Route> 
+          <Route path="/developers_list" element= {<DeveloperList />} ></Route> 
         
         </Route>
         
