@@ -16,5 +16,18 @@ class developers(models.Model):
     department = models.CharField(max_length=255,null=True)
     status = models.CharField(max_length=255, default=0)
 
+class Project(models.Model):
+    client_name = models.CharField(max_length=255)
+    client_address = models.TextField(max_length=255)
+    project_name = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    attachment = models.FileField(upload_to='uploads/',null=True,blank=True)
+    teamlead_details = models.ForeignKey(developers,on_delete=models.CASCADE,null=True,related_name='teamlead_projects')
+    developer_details = models.ForeignKey(developers,on_delete=models.CASCADE,null=True,related_name='developer_projects')
+
+
+
 
 
