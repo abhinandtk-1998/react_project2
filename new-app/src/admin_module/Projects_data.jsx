@@ -1,13 +1,71 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Form } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function Projects_data() {
 
     const [show, setShow] = useState(false);
+    const navigate = useNavigate()
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const client_nameref = useRef(null)
+    const client_addressref = useRef(null)
+    const project_nameref = useRef(null)
+    const descriptionref = useRef(null)
+    const start_dateref = useRef(null)
+    const end_dateref = useRef(null)
+    const attachmentref = useRef(null)
+
+
+    function addProject(){
+
+      if(client_nameref.current.value && client_addressref.current.value && project_nameref.current.value &&
+        descriptionref.current.value && start_dateref.current.value && end_dateref.current.value && attachmentref.current.files[0]
+      ){
+  
+  
+        let data = {
+          "client_name":client_nameref.current.value,
+          "client_address":client_addressref.current.value,
+          "project_name":project_nameref.current.value,
+          "description":descriptionref.current.value,
+          "start_date":start_dateref.current.value,
+          "end_date":end_dateref.current.value,
+          "attachment":attachmentref.current.files[0],
+        }
+  
+        
+  
+  
+        
+        const headers = {
+          'Content-Type': "application/json",
+        }
+        axios.post("http://127.0.0.1:8000/add_project/", data, headers)
+            .then((res) => console.log(res.data),navigate(0))
+  
+            .catch((err) => {
+              console.log(err)
+            })
+  
+            
+      }
+      else{
+        alert("Enter all field")
+      }
+    
+
+    }
+
+    const modalStyle = {
+      backgroundColor: '#263043'
+    }
 
     const tableStyle = {
         width: '100px',
@@ -59,53 +117,53 @@ function Projects_data() {
   return (
     <main className='main-container'>
 
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
+      <Button variant="primary" onClick={handleShow} >
+        Add Project
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+      <Modal show={show} onHide={handleClose} >
+        <Modal.Header closeButton style={modalStyle}>
+          <Modal.Title>Add Project</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            <MDBContainer fluid className='d-flex align-items-center justify-content-center bg-image' >
-            <div className='mask gradient-custom-3'></div>
-            <MDBCard className='m-3' style={{maxWidth: '800px'}}>
-                <MDBCardBody className='px-5'>
-                <h2 className="text-uppercase text-center mb-5">Registration Form</h2>
-                <MDBInput wrapperClass='mb-4' id='fname' type='text' placeholder='enter first name' ref={first_nameref}/>
-                <MDBInput wrapperClass='mb-4' id='lname' type='text' placeholder='enter last name' ref={last_nameref}/>
-                <MDBInput wrapperClass='mb-4' id='username' type='text' placeholder='enter username' ref={usernameref}/>
-                <MDBInput wrapperClass='mb-4' id='email' type='email' placeholder='enter email' ref={emailref}/>
-                <Form.Control className='mb-4' as="textarea" rows={3} placeholder='enter address' ref={addressref} />
-                <Form.Select className='mb-4' aria-label="Default select example" ref={courseref}>
-                    <option>Course Completed</option>
-                    <option value="Javascript">Javascript</option>
-                    <option value="Python">Python</option>
-                    <option value="Java">Java</option>  
-                </Form.Select>
-                <Form.Group controlId="formFile" className="mb-4">
-                    <Form.Control type="file" ref={fileref} />
-                </Form.Group>
-                <Form.Select aria-label="Default select example" ref={departmentref}>
-                    <option>Department</option>
-                    <option value="digital_marketting">Digital marketting</option>
-                    <option value="python">Python</option>
-                </Form.Select>
-                <br></br>
-                <MDBInput wrapperClass='mb-4' placeholder="enter password" id='form3' type='password' ref={passwordref}/>
-                <MDBInput wrapperClass='mb-4' placeholder="conform password" id='form4' type='password'/>
-                <span></span>
-                <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' onClick={signupSubmit}>Register</MDBBtn>
-                </MDBCardBody>
-            </MDBCard>
-            </MDBContainer> 
+        <Modal.Body style={modalStyle}>
+
+          <Form>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Client Name</Form.Label>
+              <Form.Control type="text" ref={client_nameref} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Client Address</Form.Label>
+              <Form.Control as="textarea" rows={3} ref={client_addressref} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Project Name</Form.Label>
+              <Form.Control type="text" ref={project_nameref} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Description</Form.Label>
+              <Form.Control as="textarea" rows={3} ref={descriptionref} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Start Date</Form.Label>
+              <Form.Control type="date" ref={start_dateref}  />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>End Date</Form.Label>
+              <Form.Control type="date" ref={end_dateref} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Attachment</Form.Label>
+              <Form.Control type="file" ref={attachmentref} />
+            </Form.Group>
+          </Form>
+
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={modalStyle}>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={addProject}>
             Save Changes
           </Button>
         </Modal.Footer>

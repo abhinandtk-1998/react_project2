@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from .models import CustomUser, developers
-from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer
+from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer, WorkSerialisers
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -181,6 +181,22 @@ def tl_details(request):
     print(developers_details)
     serializer = RegSerializer(developers_details, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+def add_project(request):
+    serialiser=WorkSerialisers(data=request.data)
+    if serialiser.is_valid():
+        
+        dev = Project(client_name=request.data.get('client_name'),client_address=request.data.get('client_address'),
+                         project_name=request.data.get('project_name'),department=request.data.get('department') )
+        dev.save()
+        token = Token.objects.create(user=user)
+        return JsonResponse({'token':token.key})
+    else:
+        return Response(serialiser.errors)
+
 
 
 
