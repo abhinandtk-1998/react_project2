@@ -4,7 +4,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
-from .models import CustomUser, developers
+from .models import CustomUser, developers, Project
 from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer, WorkSerialisers
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
@@ -186,16 +186,32 @@ def tl_details(request):
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def add_project(request):
+
+    print("hai")
+
+
     serialiser=WorkSerialisers(data=request.data)
     if serialiser.is_valid():
         
-        dev = Project(client_name=request.data.get('client_name'),client_address=request.data.get('client_address'),
-                         project_name=request.data.get('project_name'),department=request.data.get('department') )
-        dev.save()
-        token = Token.objects.create(user=user)
-        return JsonResponse({'token':token.key})
+        
+
+        prj = Project(client_name=request.data.get('client_name'),client_address=request.data.get('client_address'),
+                         project_name=request.data.get('project_name'),description=request.data.get('description'),
+                         start_date=request.data.get('start_date'), end_date=request.data.get('end_date'),
+                         attachment=request.data.get('attachment')
+                          )
+        prj.save()
+        print(prj)
+        return JsonResponse({'success':'project added successfully'})
     else:
         return Response(serialiser.errors)
+    
+
+@api_view(['GET'])
+def project_details(request):
+    project_details = Project.objects.all()
+    serializer = WorkSerialisers(project_details, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 

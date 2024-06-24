@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Form } from 'react-bootstrap';
@@ -8,7 +8,10 @@ import { useNavigate } from 'react-router-dom';
 
 function Projects_data() {
 
+    const baseURL = 'http://127.0.0.1:8000';
+
     const [show, setShow] = useState(false);
+    const [members, setMembers] = useState([]);
     const navigate = useNavigate()
 
     const handleClose = () => setShow(false);
@@ -22,8 +25,21 @@ function Projects_data() {
     const end_dateref = useRef(null)
     const attachmentref = useRef(null)
 
+    useEffect(() => {
+      axios.get("http://127.0.0.1:8000/project_details/")
+          .then(response => {
+              setMembers(response.data);
+              console.log(response.data);
+          })
+          .catch(error => {
+              console.error('Error fetching member details:', error);
+          });
+  }, []);
+
 
     function addProject(){
+
+      console.log("addProject function")
 
       if(client_nameref.current.value && client_addressref.current.value && project_nameref.current.value &&
         descriptionref.current.value && start_dateref.current.value && end_dateref.current.value && attachmentref.current.files[0]
@@ -37,7 +53,7 @@ function Projects_data() {
           "description":descriptionref.current.value,
           "start_date":start_dateref.current.value,
           "end_date":end_dateref.current.value,
-          "attachment":attachmentref.current.files[0],
+          // "attachment":attachmentref.current.files[0]
         }
   
         
@@ -48,7 +64,11 @@ function Projects_data() {
           'Content-Type': "application/json",
         }
         axios.post("http://127.0.0.1:8000/add_project/", data, headers)
-            .then((res) => console.log(res.data),navigate(0))
+            .then((res) => {
+              console.log(res.data)
+              navigate(0);
+            }
+            )
   
             .catch((err) => {
               console.log(err)
@@ -98,12 +118,12 @@ function Projects_data() {
         width: '200px'
       }
     
-      const department_width = {
+      const date_width = {
         width: '200px'
       }
     
       const course_width = {
-        width: '300px'
+        width: '250px'
       }
     
       const action_width = {
@@ -169,32 +189,40 @@ function Projects_data() {
         </Modal.Footer>
       </Modal>
 
-      <table striped bordered hover className='m-3'>
+      <table className='m-3'>
         <thead>
-          <th style={{...thStyle, ...sl_no_width}}>Sl.No</th>
-          <th style={{...thStyle, ...name_width}}>Name</th>
-          <th style={{...thStyle, ...email_width}}>Email</th>
-          <th style={{...thStyle, ...department_width}}>Department</th>
-          <th style={{...thStyle, ...course_width}}>Course Completed</th>
-          <th style={{...thStyle, ...action_width}}>Action</th>
+          <tr>
+            <th style={{...thStyle, ...sl_no_width}}>Sl.No</th>
+            <th style={{...thStyle, ...name_width}}>Client Name</th>
+            <th style={{...thStyle, ...email_width}}>Project Name</th>
+            <th style={{...thStyle, ...date_width}}>Start Date</th>
+            <th style={{...thStyle, ...date_width}}>End Date</th>
+            <th style={{...thStyle, ...course_width}}>Assigned To</th>
+            <th style={{...thStyle, ...action_width}}>Action</th>
+          </tr>
         </thead>
-        {/* <tbody>
+        <tbody>
          {
          members.map((member, index) => (
             <tr key={member.id}>
               <td style={tdStyle}>{index + 1}</td>
-              <td style={tdStyle}>{member.user.first_name} {member.user.last_name}</td>
-              <td style={tdStyle}>{member.user.email}</td>
-              <td style={tdStyle}>{member.department}</td>
-              <td style={tdStyle}>{member.course}</td>
+              <td style={tdStyle}>{member.client_name}</td>
+              <td style={tdStyle}>{member.project_name}</td>
+              <td style={tdStyle}>{member.start_date}</td>
+              <td style={tdStyle}>{member.end_date}</td>
+              {/* <td style={tdStyle}>{member.teamlead_details.first_name} {member.teamlead_details.last_name}</td> */}
               <td style={{...tdStyle, ...action_content_width}}> 
-                <Button variant="success" >Convert to Developer</Button>{'  '} 
-                <Button variant="danger" >Delete</Button>{' '}
+              <Form.Select className='mb-4' aria-label="Default select example">
+                <option>Select TL</option>
+                <option value="Javascript">Javascript</option>
+  
+              </Form.Select>
+
               </td>
               
             </tr>
           ))}
-        </tbody> */}
+        </tbody>
       </table>
     </main>
   )

@@ -12,5 +12,6 @@ urlpatterns = [
     path('tl_to_dev/',views.tl_to_dev, name='tl_to_dev'),
     path('tl_details/',views.tl_details, name='tl_details'),
     path('add_project/', views.add_project, name='add_project'),
+    path('project_details/', views.project_details, name='project_details'),
     
 ]
