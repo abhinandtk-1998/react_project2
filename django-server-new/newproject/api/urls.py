@@ -13,5 +13,6 @@ urlpatterns = [
     path('tl_details/',views.tl_details, name='tl_details'),
     path('add_project/', views.add_project, name='add_project'),
     path('project_details/', views.project_details, name='project_details'),
+    path('assign_work/', views.assign_work, name='assign_work'),
     
 ]

@@ -214,6 +214,26 @@ def project_details(request):
     return JsonResponse(serializer.data, safe=False)
 
 
+@api_view(['PUT'])
+def assign_work(request):
+    p_id = request.GET.get('m_id')
+    tl_id = request.GET.get('tl_id')
+
+    if p_id and tl_id:
+
+        prj = Project.objects.get(id=p_id)
+        tl = developers.objects.get(id=tl_id)
+        prj.teamlead_details = tl
+        prj.save()
+
+        return JsonResponse({'success': 'Work Successfully assigned to Teamlead'})
+
+    else:
+        return JsonResponse({'error': 'something went wrong'})
+
+
+
+
 
 
 

@@ -12,7 +12,11 @@ function Projects_data() {
 
     const [show, setShow] = useState(false);
     const [members, setMembers] = useState([]);
+    const [tls, setTls] = useState([]);
     const navigate = useNavigate()
+
+
+    const tl_optionref = useRef(null)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -35,6 +39,18 @@ function Projects_data() {
               console.error('Error fetching member details:', error);
           });
   }, []);
+
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/tl_details/")
+        .then(response => {
+            setTls(response.data);
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching TL details:', error);
+        });
+}, []);
 
 
     function addProject(){
@@ -65,8 +81,8 @@ function Projects_data() {
         }
         axios.post("http://127.0.0.1:8000/add_project/", data, headers)
             .then((res) => {
-              console.log(res.data)
               navigate(0);
+              console.log(res.data)
             }
             )
   
@@ -82,6 +98,39 @@ function Projects_data() {
     
 
     }
+
+
+    const assign_work = (m_id) => {
+
+      
+
+      let data = {
+        "m_id":m_id,
+        "tl_id":tl_optionref.current.value
+      }
+
+      const headers = {
+        'Content-Type': "application/json",
+      }
+  
+      axios.put("http://127.0.0.1:8000/assign_work/", data, headers)
+      .then((res) => {
+        console.log(res)
+        navigate(0);
+  
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  
+  
+  
+    };
+
+
+
+
+
 
     const modalStyle = {
       backgroundColor: '#263043'
@@ -210,13 +259,33 @@ function Projects_data() {
               <td style={tdStyle}>{member.project_name}</td>
               <td style={tdStyle}>{member.start_date}</td>
               <td style={tdStyle}>{member.end_date}</td>
+              <td style={tdStyle}>
+              {member.teamlead_details ? (
+                <div>
+                {member.teamlead_details.first_name} {member.teamlead_details.last_name}
+                </div>
+            ) : (
+                <p></p>
+            )}
+              </td>
               {/* <td style={tdStyle}>{member.teamlead_details.first_name} {member.teamlead_details.last_name}</td> */}
               <td style={{...tdStyle, ...action_content_width}}> 
-              <Form.Select className='mb-4' aria-label="Default select example">
+              <Form.Select className='mb-4' aria-label="Default select example" ref={tl_optionref}>
                 <option>Select TL</option>
-                <option value="Javascript">Javascript</option>
-  
+                {
+                  tls.map((tl, index) => (
+                <option key={tl.id} value={tl.id}>{tl.user.first_name} {tl.user.last_name}</option>
+
+                
+
+              ))}
               </Form.Select>
+
+              <Button variant="primary" onClick={() => assign_work(member.id)}>
+                  Assign Work
+              </Button>
+
+            
 
               </td>
               

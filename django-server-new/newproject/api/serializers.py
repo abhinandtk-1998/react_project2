@@ -18,9 +18,6 @@ class RegSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class WorkSerialisers(serializers.ModelSerializer):
-    teamlead_details = RegSerializer()
-    developer_details = RegSerializer()
-
 
     class Meta:
         model = Project
