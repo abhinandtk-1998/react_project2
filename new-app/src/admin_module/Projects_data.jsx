@@ -15,6 +15,9 @@ function Projects_data() {
     const [tls, setTls] = useState([]);
     const navigate = useNavigate()
 
+    const [selectedData, setSelectedData] = useState(null);
+  const [dropdownValue, setDropdownValue] = useState('');
+
 
     const tl_optionref = useRef(null)
 
@@ -99,15 +102,17 @@ function Projects_data() {
 
     }
 
-
-    const assign_work = (m_id) => {
+    const assign_work = async (m_id) => {
+    // const assign_work = (m_id) => {
 
       
 
       let data = {
         "m_id":m_id,
-        "tl_id":tl_optionref.current.value
+        "tl_id":dropdownValue
+  
       }
+      // "tl_id":tl_optionref.current.value,
 
       const headers = {
         'Content-Type': "application/json",
@@ -262,7 +267,7 @@ function Projects_data() {
               <td style={tdStyle}>
               {member.teamlead_details ? (
                 <div>
-                {member.teamlead_details.first_name} {member.teamlead_details.last_name}
+                 {member.teamlead_details}
                 </div>
             ) : (
                 <p></p>
@@ -270,7 +275,7 @@ function Projects_data() {
               </td>
               {/* <td style={tdStyle}>{member.teamlead_details.first_name} {member.teamlead_details.last_name}</td> */}
               <td style={{...tdStyle, ...action_content_width}}> 
-              <Form.Select className='mb-4' aria-label="Default select example" ref={tl_optionref}>
+              <Form.Select className='mb-4' aria-label="Default select example" onChange={(e) => setDropdownValue(e.target.value)}>
                 <option>Select TL</option>
                 {
                   tls.map((tl, index) => (

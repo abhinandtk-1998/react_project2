@@ -12,6 +12,7 @@ import Requests from './admin_module/Requests';
 import DeveloperList from './admin_module/DeveloperList'; 
 import TLlist from './admin_module/TLlist';
 import Projects from './admin_module/Projects';
+import Projects_tl from './teamlead_module/Projects_tl';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path="/teamlead_list" element= {<TLlist />} ></Route> 
           <Route path="/developers_list" element= {<DeveloperList />} ></Route>
           <Route path="/projects" element= {<Projects />} ></Route> 
+
+          <Route path="/projects_tl" element= {<Projects_tl />} ></Route>
         
         </Route>
         

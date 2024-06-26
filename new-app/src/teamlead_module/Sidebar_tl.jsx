@@ -10,7 +10,7 @@ function Sidebar_tl({openSidebarToggle, OpenSidebar}) {
     <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive": ""}>
         <div className='sidebar-title'>
             <div className='sidebar-brand'>
-                ADMIN
+                TEAM LEAD
             </div>
             <span className='icon close_icon' onClick={OpenSidebar}>X</span>
         </div>
@@ -22,11 +22,11 @@ function Sidebar_tl({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to="/requests">
-                    <BsFillArchiveFill className='icon'/> Requests
+                <Link to="/projects_tl">
+                    <BsFillArchiveFill className='icon'/> Projects
                 </Link>
             </li>
-            <li className='sidebar-list-item'>
+            {/* <li className='sidebar-list-item'>
                 <Link to="/teamlead_list">
                     <BsFillGrid3X3GapFill className='icon'/> Team Leads
                 </Link>
@@ -50,7 +50,7 @@ function Sidebar_tl({openSidebarToggle, OpenSidebar}) {
                 <a href="">
                     <BsFillGearFill className='icon'/> Setting
                 </a>
-            </li>
+            </li> */}
         </ul>
     </aside>
   )

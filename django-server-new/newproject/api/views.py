@@ -216,8 +216,10 @@ def project_details(request):
 
 @api_view(['PUT'])
 def assign_work(request):
-    p_id = request.GET.get('m_id')
-    tl_id = request.GET.get('tl_id')
+    data = json.loads(request.body)
+    p_id = data.get('m_id')
+    tl_id = data.get('tl_id')
+
 
     if p_id and tl_id:
 
