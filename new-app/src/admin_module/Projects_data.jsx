@@ -16,7 +16,9 @@ function Projects_data() {
     const navigate = useNavigate()
 
     const [selectedData, setSelectedData] = useState(null);
-  const [dropdownValue, setDropdownValue] = useState('');
+    const [dropdownValue, setDropdownValue] = useState('');
+
+    const [tldetails, setTldetails] = useState();
 
 
     const tl_optionref = useRef(null)
@@ -131,6 +133,50 @@ function Projects_data() {
   
   
     };
+
+
+    const handleTeamleadDetails = (id) => {
+      console.log(id)
+      let data = {
+        "id":id
+      }
+
+      
+      const headers = {
+        'Content-Type': "application/json",
+      }
+      axios.get(`http://127.0.0.1:8000/tl_prj_details/?id=${id}`)
+          .then((res) => {
+
+            console.log(res.data)
+            setTldetails(res.data);
+
+            
+  
+            
+          }
+          )
+
+          .catch((err) => {
+            console.log(err)
+          })
+
+
+          return (
+            <div>
+              {/* <p>{tldetails.first_name}</p> */}
+            </div>
+          );
+    
+  };
+
+  // useEffect(() => {
+  //   members.forEach((member) => {
+  //     if (member.teamlead_details) {
+  //       handleTeamleadDetails(member.teamlead_details);
+  //     }
+  //   });
+  // }, [members]);
 
 
 
@@ -267,28 +313,37 @@ function Projects_data() {
               <td style={tdStyle}>
               {member.teamlead_details ? (
                 <div>
-                 {member.teamlead_details}
+                 {handleTeamleadDetails(member.teamlead_details)}
                 </div>
             ) : (
                 <p></p>
             )}
               </td>
-              {/* <td style={tdStyle}>{member.teamlead_details.first_name} {member.teamlead_details.last_name}</td> */}
               <td style={{...tdStyle, ...action_content_width}}> 
+
+              {member.teamlead_details ? (
+                <p></p>
+            ) : (
+              <div>
               <Form.Select className='mb-4' aria-label="Default select example" onChange={(e) => setDropdownValue(e.target.value)}>
-                <option>Select TL</option>
-                {
-                  tls.map((tl, index) => (
-                <option key={tl.id} value={tl.id}>{tl.user.first_name} {tl.user.last_name}</option>
+              <option>Select TL</option>
+              {
+                tls.map((tl, index) => (
+              <option key={tl.id} value={tl.id}>{tl.user.first_name} {tl.user.last_name}</option>
 
-                
+              
 
-              ))}
-              </Form.Select>
+            ))}
+            </Form.Select>
 
-              <Button variant="primary" onClick={() => assign_work(member.id)}>
-                  Assign Work
-              </Button>
+            <Button variant="primary" onClick={() => assign_work(member.id)}>
+                Assign Work
+            </Button>
+            </div>
+            )}
+
+
+              
 
             
 

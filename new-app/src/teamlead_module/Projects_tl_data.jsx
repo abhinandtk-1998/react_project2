@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 function Projects_tl_data() {
 
-    const [members, setMembers] = useState([]);
+    
 
 
 
@@ -57,6 +58,36 @@ function Projects_tl_data() {
           textAlign:'center'
         }
 
+        const [projects, setProjects] = useState([]);
+
+
+
+        useEffect(() => {
+
+          var value = localStorage.getItem('auth_token');
+
+          console.log(value)
+
+          let data = {
+            "token":value
+          }
+
+          const headers = {
+            'Content-Type': "application/json",
+          }
+
+
+          axios.get("http://127.0.0.1:8000/project_details_tl/", data, headers)
+              .then(response => {
+                  
+                  setProjects(response.data);
+                  console.log(response.data);
+              })
+              .catch(error => {
+                  console.error('Error fetching member details:', error);
+              });
+      }, []);
+
   return (
     <main className='main-container'>
         <table className='m-3'>
@@ -73,13 +104,13 @@ function Projects_tl_data() {
         </thead>
         <tbody>
          {
-         members.map((member, index) => (
-            <tr key={member.id}>
+         projects.map((project, index) => (
+            <tr key={project.id}>
               <td style={tdStyle}>{index + 1}</td>
-              <td style={tdStyle}>{member.client_name}</td>
-              <td style={tdStyle}>{member.project_name}</td>
-              <td style={tdStyle}>{member.start_date}</td>
-              <td style={tdStyle}>{member.end_date}</td>
+              <td style={tdStyle}>{project.client_name}</td>
+              <td style={tdStyle}>{project.project_name}</td>
+              <td style={tdStyle}>{project.start_date}</td>
+              <td style={tdStyle}>{project.end_date}</td>
               <td style={tdStyle}>
               
               </td>

@@ -14,5 +14,8 @@ urlpatterns = [
     path('add_project/', views.add_project, name='add_project'),
     path('project_details/', views.project_details, name='project_details'),
     path('assign_work/', views.assign_work, name='assign_work'),
+    path('tl_prj_details/', views.tl_prj_details, name = 'tl_prj_details'),
+    path('project_details_tl/', views.project_details_tl, name = 'project_details_tl'),
+    
     
 ]

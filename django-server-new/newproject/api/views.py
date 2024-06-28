@@ -44,8 +44,14 @@ def loginview(request):
         user = authenticate(username=uname,password=pword)
         print(user)
         if user:
-            token = Token.objects.get(user=user)
+            tokens, created= Token.objects.get_or_create(user=user)
             cuser = CustomUser.objects.get(username=uname)
+
+            if created:
+                token = created
+
+            else:
+                token = tokens
             
             if cuser.is_staff == 1:
                 user_details_dict = {'token':token.key,'first_name': cuser.first_name, 'last_name':cuser.last_name, 'username': cuser.username, 
@@ -232,6 +238,46 @@ def assign_work(request):
 
     else:
         return JsonResponse({'error': 'something went wrong'})
+
+
+@api_view(['GET'])
+def tl_prj_details(request):
+
+    # data = json.loads(request.body)
+    # id = data.get('id')
+
+    id = request.GET.get('id')
+    # id = int(id_d)
+
+    print(id)
+
+    developers_details = developers.objects.get(id = id)
+    cuser = CustomUser.objects.get(id = developers_details.user.id)
+    # print(developers_details)
+    print(cuser)
+    serializer = UserSerialisers(cuser)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+def project_details_tl(request):
+
+    token = request.data.get('token')
+
+    print(token)
+    
+
+    user = CustomUser.objects.filter(is_staff=0)
+    for u in user:
+        token_d = Token.objects.get(user=u)
+        if token == token_d:
+            user_tl = u
+            break
+
+    prj = Project.objects.filter(teamlead_details=user_tl)
+
+    serializer = WorkSerialisers(prj, many=True)
+    return JsonResponse(serializer.data, safe=False)
+    
 
 
 
