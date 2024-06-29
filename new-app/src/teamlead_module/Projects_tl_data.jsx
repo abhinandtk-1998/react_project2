@@ -60,24 +60,24 @@ function Projects_tl_data() {
 
         const [projects, setProjects] = useState([]);
 
+        const [developers, setDevelopers] = useState([]);
+
 
 
         useEffect(() => {
 
-          var value = localStorage.getItem('auth_token');
+          var token = localStorage.getItem('auth_token');
 
-          console.log(value)
-
-          let data = {
-            "token":value
-          }
+          console.log(token)
 
           const headers = {
-            'Content-Type': "application/json",
-          }
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+          };
 
 
-          axios.get("http://127.0.0.1:8000/project_details_tl/", data, headers)
+
+          axios.get("http://127.0.0.1:8000/project_details_tl/", {headers})
               .then(response => {
                   
                   setProjects(response.data);
@@ -114,10 +114,28 @@ function Projects_tl_data() {
               <td style={tdStyle}>
               
               </td>
-              {/* <td style={tdStyle}>{member.teamlead_details.first_name} {member.teamlead_details.last_name}</td> */}
               <td style={{...tdStyle, ...action_content_width}}> 
+              {/* {project.teamlead_details ? (
+                <p></p>
+            ) : (
+              <div>
+              <Form.Select className='mb-4' aria-label="Default select example" onChange={(e) => setDropdownValue(e.target.value)}>
+              <option>Select Dveloper</option>
+              {
+                tls.map((tl, index) => (
+              <option key={tl.id} value={tl.id}>{tl.user.first_name} {tl.user.last_name}</option>
+
               
-            
+
+            ))}
+            </Form.Select>
+
+            <Button variant="primary" onClick={() => assign_work(member.id)}>
+                Assign Work
+            </Button>
+            </div>
+            )} */}
+
 
               </td>
               

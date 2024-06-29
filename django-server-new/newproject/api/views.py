@@ -258,25 +258,52 @@ def tl_prj_details(request):
     serializer = UserSerialisers(cuser)
     return JsonResponse(serializer.data, safe=False)
 
+# @api_view(['GET'])
+# def project_details_tl(request):
+
+#     token = request.headers.get('Authorization')
+
+#     token = token.split(' ')[1] if ' ' in token else token
+
+
+
+#     user = CustomUser.objects.all()
+#     for u in user:
+#         token_d = Token.objects.get(user=u)
+#         print(token_d)
+#         print()
+#         print(token)
+#         print()
+#         print()
+#         if token == token_d:
+#             user_tl = u
+#             print("true")
+#             break
+
+#     prj = Project.objects.filter(teamlead_details=user_tl)
+
+#     serializer = WorkSerialisers(prj, many=True)
+#     return JsonResponse(serializer.data, safe=False)
+
+
 @api_view(['GET'])
 def project_details_tl(request):
+    token = request.headers.get('Authorization')
+    if not token:
+        return JsonResponse({'error': 'Token not provided'}, status=400)
 
-    token = request.data.get('token')
+    token = token.split(' ')[1] if ' ' in token else token
 
-    print(token)
-    
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_tl = token_obj.user  # This is your CustomUser instance
+        dev = developers.objects.get(user = user_tl)
 
-    user = CustomUser.objects.filter(is_staff=0)
-    for u in user:
-        token_d = Token.objects.get(user=u)
-        if token == token_d:
-            user_tl = u
-            break
-
-    prj = Project.objects.filter(teamlead_details=user_tl)
-
-    serializer = WorkSerialisers(prj, many=True)
-    return JsonResponse(serializer.data, safe=False)
+        prj = Project.objects.filter(teamlead_details=dev)
+        serializer = WorkSerialisers(prj, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    except Token.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
     
 
 
