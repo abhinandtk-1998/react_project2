@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import { Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function Projects_tl_data() {
 
@@ -60,7 +63,42 @@ function Projects_tl_data() {
 
         const [projects, setProjects] = useState([]);
 
-        const [developers, setDevelopers] = useState([]);
+        const [devs, setDevs] = useState([]);
+
+        const [dropdownValue, setDropdownValue] = useState('');
+
+        const navigate = useNavigate()
+
+
+        const assign_work = async (m_id) => {
+          // const assign_work = (m_id) => {
+      
+            
+      
+            let data = {
+              "m_id":m_id,
+              "dev_id":dropdownValue
+        
+            }
+            // "tl_id":tl_optionref.current.value,
+      
+            const headers = {
+              'Content-Type': "application/json",
+            }
+        
+            axios.put("http://127.0.0.1:8000/assign_work_tl/", data, headers)
+            .then((res) => {
+              console.log(res)
+              navigate(0);
+        
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        
+        
+        
+          };
 
 
 
@@ -87,6 +125,25 @@ function Projects_tl_data() {
                   console.error('Error fetching member details:', error);
               });
       }, []);
+
+
+      useEffect(() => {
+        axios.get("http://127.0.0.1:8000/dev_details_tl/")
+            .then(response => {
+                setDevs(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching TL details:', error);
+            });
+    }, []);
+    
+
+
+
+
+
+
 
   return (
     <main className='main-container'>
@@ -115,26 +172,26 @@ function Projects_tl_data() {
               
               </td>
               <td style={{...tdStyle, ...action_content_width}}> 
-              {/* {project.teamlead_details ? (
+              {project.developer_details ? (
                 <p></p>
             ) : (
               <div>
               <Form.Select className='mb-4' aria-label="Default select example" onChange={(e) => setDropdownValue(e.target.value)}>
-              <option>Select Dveloper</option>
+              <option>Select Developer</option>
               {
-                tls.map((tl, index) => (
-              <option key={tl.id} value={tl.id}>{tl.user.first_name} {tl.user.last_name}</option>
+                devs.map((dev, index) => (
+              <option key={dev.id} value={dev.id}>{dev.user.first_name} {dev.user.last_name}</option>
 
               
 
             ))}
             </Form.Select>
 
-            <Button variant="primary" onClick={() => assign_work(member.id)}>
+            <Button variant="primary" onClick={() => assign_work(project.id)}>
                 Assign Work
             </Button>
             </div>
-            )} */}
+            )}
 
 
               </td>

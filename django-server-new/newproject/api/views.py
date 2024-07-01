@@ -304,6 +304,36 @@ def project_details_tl(request):
         return JsonResponse(serializer.data, safe=False)
     except Token.DoesNotExist:
         return JsonResponse({'error': 'Invalid token'}, status=400)
+
+
+@api_view(['PUT'])
+def assign_work_tl(request):
+    data = json.loads(request.body)
+    p_id = data.get('m_id')
+    dev_id = data.get('dev_id')
+
+
+    if p_id and dev_id:
+
+        prj = Project.objects.get(id=p_id)
+        dev = developers.objects.get(id=dev_id)
+        prj.developer_details = dev
+        prj.save()
+
+        return JsonResponse({'success': 'Work Successfully assigned to Developer'})
+
+    else:
+        return JsonResponse({'error': 'something went wrong'})
+
+
+
+@api_view(['GET'])
+def dev_details_tl(request):
+    user_list = CustomUser.objects.filter(user_type = 1)
+    developers_details = developers.objects.filter(status=1, user__in=user_list)
+    print(developers_details)
+    serializer = RegSerializer(developers_details, many=True)
+    return JsonResponse(serializer.data, safe=False)
     
 
 
