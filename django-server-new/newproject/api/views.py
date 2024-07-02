@@ -334,6 +334,44 @@ def dev_details_tl(request):
     print(developers_details)
     serializer = RegSerializer(developers_details, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+def project_details_dev(request):
+    token = request.headers.get('Authorization')
+    if not token:
+        return JsonResponse({'error': 'Token not provided'}, status=400)
+
+    token = token.split(' ')[1] if ' ' in token else token
+
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_tl = token_obj.user  # This is your CustomUser instance
+        dev = developers.objects.get(user = user_tl)
+
+        prj = Project.objects.filter(developer_details=dev)
+        serializer = WorkSerialisers(prj, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    except Token.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
+
+
+@api_view(['GET'])
+def developer_profile(request):
+    token = request.headers.get('Authorization')
+    if not token:
+        return JsonResponse({'error': 'Token not provided'}, status=400)
+
+    token = token.split(' ')[1] if ' ' in token else token
+
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_dev = token_obj.user  # This is your CustomUser instance
+        dev = developers.objects.get(user = user_dev)
+
+        serializer = RegSerializer(dev)
+        return JsonResponse(serializer.data, safe=False)
+    except Token.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
     
 
 

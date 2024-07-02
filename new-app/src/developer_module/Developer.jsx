@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Header_dev from './Header_dev'
 import Sidebar_dev from './Sidebar_dev'
+import Developer_profile from './Developer_profile'
 import './Developer.css'
 
 function Developer() {
@@ -36,7 +37,7 @@ function Developer() {
     <div className='grid-container'>
       <Header_dev OpenSidebar={OpenSidebar}/>
       <Sidebar_dev openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar}/>
-      {/* <Dashboard /> */}
+      <Developer_profile />
     </div>
     
 

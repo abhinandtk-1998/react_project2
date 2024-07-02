@@ -17,7 +17,9 @@ urlpatterns = [
     path('tl_prj_details/', views.tl_prj_details, name = 'tl_prj_details'),
     path('project_details_tl/', views.project_details_tl, name = 'project_details_tl'),
     path('assign_work_tl/', views.assign_work_tl, name='assign_work_tl'),
-    path('dev_details_tl/', views.dev_details_tl, name='dev_details_tl')
+    path('dev_details_tl/', views.dev_details_tl, name='dev_details_tl'),
+    path('project_details_dev/', views.project_details_dev, name = 'project_details_dev'),
+    path('developer_profile/', views.developer_profile, name='developer_profile')
     
     
 ]
