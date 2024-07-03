@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 function Developer_profile() {
 
@@ -46,14 +47,14 @@ function Developer_profile() {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       />
-      <div className="card m-7">
+      <div className="card">
         <img src="img.jpg" alt={firstName} style={{ width: "100%" }} />
         <h1>{firstName} {lastName}</h1>
         <p className="title">Developer</p>
         <p>{email}</p>
         <p>{address}</p>
         <p>
-          <button>Edit</button>
+          <Link to="/edit_dev_profile"><button>Edit</button></Link>
         </p>
       </div>
     </main>
