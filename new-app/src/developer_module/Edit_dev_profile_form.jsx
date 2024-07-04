@@ -14,6 +14,7 @@ import {
 from 'mdb-react-ui-kit';
 import { Form } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Edit_dev_profile_form() {
 
@@ -28,6 +29,8 @@ function Edit_dev_profile_form() {
 
 
   const [profile, setProfile] = useState([]);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -53,13 +56,77 @@ function Edit_dev_profile_form() {
         });
 }, []);
 
-    const address = profile?.address || 'No address provided';
-    const firstName = profile?.user?.first_name || 'No name provided';
-    const lastName = profile?.user?.last_name || 'No name provided';
-    const userName = profile?.user?.username || 'No usernme provided';
-    const deparment = profile?.department || 'No department provided';
-    const email = profile?.user?.email || 'No email provided';
-    const course = profile?.course || 'No course provided';
+
+
+    const handleEdit = () => {
+      // const updatedProfile = {
+      //   first_name: first_nameref.current.value,
+
+      //   last_name: last_nameref.current.value,
+      //   username: usernameref.current.value,
+      //   email: emailref.current.value,
+      //   address: addressref.current.value,
+      //   course: courseref.current.value,
+      //   department: departmentref.current.value,
+      //   file: fileref.current.files[0]
+      // };
+      // console.log('Updated Profile:', updatedProfile);
+      // Add code here to send updated profile data to the server
+
+
+
+      if(first_nameref.current.value && last_nameref.current.value && usernameref.current.value &&
+        emailref.current.value && addressref.current.value && courseref.current.value &&
+        departmentref.current.value
+      ){
+  
+  
+        let data = {
+          "id":profile.id,
+          "first_name":first_nameref.current.value,
+          "last_name":last_nameref.current.value,
+          "username":usernameref.current.value,
+          "email":emailref.current.value,
+          "address":addressref.current.value,
+          "course":courseref.current.value,
+          "file":fileref.current.files[0],
+          "department":departmentref.current.value
+        }
+        
+  
+  
+        
+        const headers = {
+          'Content-Type': "application/json",
+        }
+        axios.put("http://127.0.0.1:8000/edit_profile/", data, headers)
+            .then((res) => {
+              console.log(res.data)
+              navigate('/developer')
+          })
+  
+            .catch((err) => {
+              console.log(err)
+            })
+  
+            
+      }
+      else{
+        alert("Enter all field")
+      }
+
+
+
+
+    };
+
+    // const address = profile?.address || '';
+    // const firstName = profile?.user?.first_name || '';
+    // const lastName = profile?.user?.last_name || '';
+    // const userName = profile?.user?.username || '';
+    // const deparment = profile?.department || '';
+    // const email = profile?.user?.email || '';
+    // const course = profile?.course || '';
 
   return (
     <main className='main-container'>
@@ -69,12 +136,12 @@ function Edit_dev_profile_form() {
           <MDBCard className='m-3' style={{maxWidth: '800px'}}>
             <MDBCardBody className='px-5'>
               <h2 className="text-uppercase text-center mb-5">Edit Profile</h2>
-              <MDBInput wrapperClass='mb-4' id='fname' type='text' placeholder={firstName} ref={first_nameref}/>
-              <MDBInput wrapperClass='mb-4' id='lname' type='text' placeholder={lastName} ref={last_nameref}/>
-              <MDBInput wrapperClass='mb-4' id='username' type='text' placeholder={userName} ref={usernameref}/>
-              <MDBInput wrapperClass='mb-4' id='email' type='email' placeholder={email} ref={emailref}/>
-              <Form.Control className='mb-4' as="textarea" rows={3} placeholder={address} ref={addressref} />
-              <Form.Select className='mb-4' aria-label="Default select example" defaultValue={profile.course || ''} ref={courseref}>
+              <MDBInput wrapperClass='mb-4' id='fname' type='text' value={profile.user?.first_name || ''} ref={first_nameref}/>
+              <MDBInput wrapperClass='mb-4' id='lname' type='text' value={profile.user?.last_name || ''} ref={last_nameref}/>
+              <MDBInput wrapperClass='mb-4' id='username' type='text' value={profile.user?.username || ''}ref={usernameref}/>
+              <MDBInput wrapperClass='mb-4' id='email' type='email' value={profile.user?.email || ''} ref={emailref}/>
+              <Form.Control className='mb-4' as="textarea" rows={3} defaultValue={profile.address || ''} ref={addressref} />
+              <Form.Select className='mb-4' aria-label="Default select example" value={profile.course || ''} ref={courseref}>
                 <option>Course Completed</option>
                 <option value="Javascript">Javascript</option>
                 <option value="Python">Python</option>
@@ -83,7 +150,7 @@ function Edit_dev_profile_form() {
               <Form.Group controlId="formFile" className="mb-4">
                 <Form.Control type="file" ref={fileref} />
               </Form.Group>
-              <Form.Select aria-label="Default select example" ref={departmentref}>
+              <Form.Select aria-label="Default select example" value={profile.department || ''} ref={departmentref}>
                 <option>Department</option>
                 <option value="digital_marketting">Digital marketting</option>
                 <option value="python">Python</option>
@@ -91,7 +158,7 @@ function Edit_dev_profile_form() {
               <br></br>
 
               <span></span>
-              <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg'>Edit</MDBBtn>
+              <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' onClick={handleEdit} >Edit</MDBBtn>
             </MDBCardBody>
           </MDBCard>
         </MDBContainer>

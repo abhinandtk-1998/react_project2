@@ -19,7 +19,8 @@ urlpatterns = [
     path('assign_work_tl/', views.assign_work_tl, name='assign_work_tl'),
     path('dev_details_tl/', views.dev_details_tl, name='dev_details_tl'),
     path('project_details_dev/', views.project_details_dev, name = 'project_details_dev'),
-    path('developer_profile/', views.developer_profile, name='developer_profile')
+    path('developer_profile/', views.developer_profile, name='developer_profile'),
+    path('edit_profile/', views.edit_profile, name='edit_profile')
     
     
 ]

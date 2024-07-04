@@ -22,3 +22,10 @@ class WorkSerialisers(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
+
+class EditDevSerializer(serializers.ModelSerializer):
+    user = UserSerialisers()
+
+    class Meta:
+        model = developers
+        fields = ['id', 'first_name', 'last_name', 'email', 'user']

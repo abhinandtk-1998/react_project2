@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from .models import CustomUser, developers, Project
-from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer, WorkSerialisers
+from .serializers import UserSerialisers, UserLogInSerialisers, RegSerializer, WorkSerialisers, EditDevSerializer
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -193,8 +193,6 @@ def tl_details(request):
 # @permission_classes([IsAuthenticated])
 def add_project(request):
 
-    print("hai")
-
 
     serialiser=WorkSerialisers(data=request.data)
     if serialiser.is_valid():
@@ -372,6 +370,50 @@ def developer_profile(request):
         return JsonResponse(serializer.data, safe=False)
     except Token.DoesNotExist:
         return JsonResponse({'error': 'Invalid token'}, status=400)
+    
+
+
+@api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+def edit_profile(request):
+    serialiser=EditDevSerializer(data=request.data)
+
+    print(serialiser)
+
+    if serialiser.is_valid():
+
+        dev = developers.objects.get(id=request.data.get('id'))
+        
+        dev.address = request.data.get('address')
+        dev.course = request.data.get('course')
+        dev.certificate = request.data.get('file')
+        dev.department = request.data.get('department')
+
+        dev.save()
+
+        user = CustomUser.objects.get(id = dev.user.id)
+
+        user.first_name = request.data.get('first_name')
+        user.last_name = request.data.get('last_name')
+        user.username = request.data.get('username')
+        user.email = request.data.get('email')
+
+        user.save()
+
+
+        # user = CustomUser.objects.create_user(first_name=request.data.get('first_name'),last_name=request.data.get('last_name'),
+        #                                       password=request.data.get('password'),username=request.data.get('username'),
+        #                                       email=request.data.get('email'))
+        
+        # dev = developers(user=user,address=request.data.get('address'),course=request.data.get('course'),
+        #                  certificate=request.data.get('file'),department=request.data.get('department') )
+        # dev.save()
+        # token = Token.objects.create(user=user)
+
+
+        return JsonResponse({'success': 'Profile updated successfully'})
+    else:
+        return Response(serialiser.errors)
     
 
 
