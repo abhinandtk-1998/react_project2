@@ -56,6 +56,9 @@ function Developer_profile() {
         <p>
           <Link to="/edit_dev_profile"><button>Edit</button></Link>
         </p>
+        <p>
+          <Link to="/change_dev_password"><button>Change Password</button></Link>
+        </p>
       </div>
     </main>
   )

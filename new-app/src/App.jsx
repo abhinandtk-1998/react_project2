@@ -15,6 +15,7 @@ import Projects from './admin_module/Projects';
 import Projects_tl from './teamlead_module/Projects_tl';
 import Projects_dev from './developer_module/Projects_dev';
 import Edit_dev_profile from './developer_module/Edit_dev_profile';
+import Change_dev_password from './developer_module/Change_dev_password';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
 
           <Route path="/projects_dev" element= {<Projects_dev />} ></Route>
           <Route path="/edit_dev_profile" element={<Edit_dev_profile />} ></Route>
+          <Route path="/change_dev_password" element={<Change_dev_password />} ></Route>
         
         </Route>
         

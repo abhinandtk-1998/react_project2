@@ -30,6 +30,20 @@ function Edit_dev_profile_form() {
 
   const [profile, setProfile] = useState([]);
 
+  const [courseOption, setCourseOption] = useState('');
+
+  const [departmentOption, setDepartmentOption] = useState('');
+
+  const courseChange = (event) => {
+    setCourseOption(event.target.value);
+  };
+
+  const departmentChange = (event) => {
+    setDepartmentOption(event.target.value);
+  };
+
+  
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -49,11 +63,14 @@ function Edit_dev_profile_form() {
         .then(response => {
             
             setProfile(response.data);
+            setCourseOption(response.data.course);
+            setDepartmentOption(response.data.course);
             console.log(response.data);
         })
         .catch(error => {
             console.error('Error fetching profile details:', error);
         });
+
 }, []);
 
 
@@ -136,12 +153,12 @@ function Edit_dev_profile_form() {
           <MDBCard className='m-3' style={{maxWidth: '800px'}}>
             <MDBCardBody className='px-5'>
               <h2 className="text-uppercase text-center mb-5">Edit Profile</h2>
-              <MDBInput wrapperClass='mb-4' id='fname' type='text' value={profile.user?.first_name || ''} ref={first_nameref}/>
-              <MDBInput wrapperClass='mb-4' id='lname' type='text' value={profile.user?.last_name || ''} ref={last_nameref}/>
-              <MDBInput wrapperClass='mb-4' id='username' type='text' value={profile.user?.username || ''}ref={usernameref}/>
-              <MDBInput wrapperClass='mb-4' id='email' type='email' value={profile.user?.email || ''} ref={emailref}/>
+              <Form.Control className='mb-4' id='fname' type='text' defaultValue={profile.user?.first_name || ''} ref={first_nameref}/>
+              <Form.Control className='mb-4' id='lname' type='text' defaultValue={profile.user?.last_name || ''} ref={last_nameref}/>
+              <Form.Control className='mb-4' id='username' type='text' defaultValue={profile.user?.username || ''}ref={usernameref}/>
+              <Form.Control className='mb-4' id='email' type='email' defaultValue={profile.user?.email || ''} ref={emailref}/>
               <Form.Control className='mb-4' as="textarea" rows={3} defaultValue={profile.address || ''} ref={addressref} />
-              <Form.Select className='mb-4' aria-label="Default select example" value={profile.course || ''} ref={courseref}>
+              <Form.Select className='mb-4' aria-label="Default select example" value={courseOption} onChange={courseChange} ref={courseref}>
                 <option>Course Completed</option>
                 <option value="Javascript">Javascript</option>
                 <option value="Python">Python</option>
@@ -150,7 +167,7 @@ function Edit_dev_profile_form() {
               <Form.Group controlId="formFile" className="mb-4">
                 <Form.Control type="file" ref={fileref} />
               </Form.Group>
-              <Form.Select aria-label="Default select example" value={profile.department || ''} ref={departmentref}>
+              <Form.Select aria-label="Default select example" value={departmentOption} onChange={departmentChange} ref={departmentref}>
                 <option>Department</option>
                 <option value="digital_marketting">Digital marketting</option>
                 <option value="python">Python</option>

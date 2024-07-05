@@ -24,8 +24,7 @@ class WorkSerialisers(serializers.ModelSerializer):
         fields = '__all__'
 
 class EditDevSerializer(serializers.ModelSerializer):
-    user = UserSerialisers()
 
     class Meta:
         model = developers
-        fields = ['id', 'first_name', 'last_name', 'email', 'user']
+        fields = ['id', 'address', 'course', 'certificate', 'department']
