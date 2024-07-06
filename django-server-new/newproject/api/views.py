@@ -11,6 +11,8 @@ from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.core import serializers
 import json
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import get_user_model
 
 
 
@@ -414,6 +416,56 @@ def edit_profile(request):
         return JsonResponse({'success': 'Profile updated successfully'})
     else:
         return Response(serialiser.errors)
+    
+
+@api_view(['POST'])
+def check_password(request):
+    token = request.headers.get('Authorization')
+    if not token:
+        return Response({'error': 'Token not provided'}, status=400)
+
+    token = token.split(' ')[1] if ' ' in token else token
+
+    pword = request.data.get('password')
+    if not pword:
+        return Response({'error': 'Password not provided'}, status=400)
+
+    try:
+        token_obj = Token.objects.get(key=token)
+        user = token_obj.user  # This is your user instance
+        if check_password(pword, user.password):
+            return Response({'True': 'Password is matching'})
+        else:
+            return Response({'False': 'Password is not matching'})
+        
+    except Token.DoesNotExist:
+        return Response({'error': 'Invalid token'}, status=400)
+
+
+@api_view(['GET'])
+def change_password(request):
+
+    token = request.headers.get('Authorization')
+    if not token:
+        return JsonResponse({'error': 'Token not provided'}, status=400)
+
+    token = token.split(' ')[1] if ' ' in token else token
+
+    npword = request.data.get('newpassword')
+
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_dev = token_obj.user  # This is your CustomUser instance
+        user_dev.password = npword
+        return JsonResponse({'success': 'password changed successfully'})
+ 
+    except Token.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
+
+
+
+
+
     
 
 

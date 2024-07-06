@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     MDBBtn,
     MDBContainer,
@@ -12,6 +12,8 @@ import {
     MDBFile
   }
   from 'mdb-react-ui-kit';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
   
 
 function Change_dev_password_form() {
@@ -20,50 +22,104 @@ function Change_dev_password_form() {
     const newpasswordref = useRef(null)
     const cnewpasswordref = useRef(null)
 
+    const [newPassword, setNewPassword] = useState('');
+
+
+    const navigate = useNavigate()
+
 
     const passwordChange = () => {
-  
-  
-  
-        if(first_nameref.current.value && last_nameref.current.value && usernameref.current.value &&
-          emailref.current.value && addressref.current.value && courseref.current.value &&
-          departmentref.current.value
-        ){
-    
-    
-          let data = {
-            "id":profile.id,
-            "first_name":first_nameref.current.value,
-            "last_name":last_nameref.current.value,
-            "username":usernameref.current.value,
-            "email":emailref.current.value,
-            "address":addressref.current.value,
-            "course":courseref.current.value,
-            "file":fileref.current.files[0],
-            "department":departmentref.current.value
-          }
+
+
+        let data = {
+            "password":passwordref.current.value,
+        }
           
-    
-    
           
-          const headers = {
-            'Content-Type': "application/json",
-          }
-          axios.put("http://127.0.0.1:8000/edit_profile/", data, headers)
-              .then((res) => {
-                console.log(res.data)
-                navigate('/developer')
+        var token = localStorage.getItem('auth_token');
+
+        console.log(token)
+
+        const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
+        };
+
+
+        axios.post("http://127.0.0.1:8000/check_password/",data, {headers})
+            .then(response => {
+                
+                console.log(response.data);
+
+                if(newpasswordref.current.value === cnewpasswordref.current.value){
+
+                    const specialCharactersRegex = /[!@#$%^&*(),.?":{}|<>]/g;
+        
+                    const numberRegex = /\d/;  // \d matches any digit (0-9)
+        
+                    const capitalLetterRegex = /[A-Z]/;
+
+                    setNewPassword(newpasswordref.current.value)
+        
+                    if(newPassword.length < 8){
+                        alert("password must contain minimum 8 characters")
+                    }
+                    else if(specialCharactersRegex.test(newpasswordref.current.value)){
+                        alert("password must contain special character")
+                    }
+        
+                    else if(numberRegex.test(newpasswordref.current.value)){
+                        alert("password must contain numbers")
+                    }
+        
+                    else if(capitalLetterRegex.test(newpasswordref.current.value)){
+                        alert("password must contain capital letter")
+                    }
+        
+                    else{
+
+                        let data = {
+                            "newpassword":newpasswordref.current.value
+                
+                          }
+                          
+                        var token = localStorage.getItem('auth_token');
+
+                        console.log(token)
+
+                        const headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${token}`
+        };
+                        axios.put("http://127.0.0.1:8000/change_password/", data, headers)
+                            .then((res) => {
+                            console.log(res.data)
+                            navigate('/developer')
+                        })
+                
+                            .catch((err) => {
+                            console.log(err)
+                            })
+                    }
+        
+            
+                  
+            
+                      
+                }
+                else{
+                  alert("Enter all field")
+                }
             })
-    
-              .catch((err) => {
-                console.log(err)
-              })
-    
-              
-        }
-        else{
-          alert("Enter all field")
-        }
+            .catch(error => {
+                console.error('Error fetching profile details:', error);
+            });
+
+
+  
+  
+  
+        
   
   
   

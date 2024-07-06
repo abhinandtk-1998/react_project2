@@ -33,8 +33,9 @@ function Developer_profile() {
     const address = profile?.address || 'No address provided';
     const firstName = profile?.user?.first_name || 'No name provided';
     const lastName = profile?.user?.last_name || 'No name provided';
-    const deparment = profile?.department || 'No department provided';
+    const department = profile?.department || 'No department provided';
     const email = profile?.user?.email || 'No email provided';
+    const course = profile?.course || 'No course provided';
     
 
 
@@ -53,6 +54,8 @@ function Developer_profile() {
         <p className="title">Developer</p>
         <p>{email}</p>
         <p>{address}</p>
+        <p>{course}</p>
+        <p>{department}</p>
         <p>
           <Link to="/edit_dev_profile"><button>Edit</button></Link>
         </p>
