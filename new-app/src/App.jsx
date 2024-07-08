@@ -16,6 +16,7 @@ import Projects_tl from './teamlead_module/Projects_tl';
 import Projects_dev from './developer_module/Projects_dev';
 import Edit_dev_profile from './developer_module/Edit_dev_profile';
 import Change_dev_password from './developer_module/Change_dev_password';
+import Edit_tl_profile from './teamlead_module/Edit_tl_profile';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/projects" element= {<Projects />} ></Route> 
 
           <Route path="/projects_tl" element= {<Projects_tl />} ></Route>
+          <Route path="/edit_tl_profile" element={<Edit_tl_profile />} ></Route>
 
           <Route path="/projects_dev" element= {<Projects_dev />} ></Route>
           <Route path="/edit_dev_profile" element={<Edit_dev_profile />} ></Route>

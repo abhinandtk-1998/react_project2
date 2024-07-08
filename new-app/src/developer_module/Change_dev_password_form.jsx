@@ -22,7 +22,7 @@ function Change_dev_password_form() {
     const newpasswordref = useRef(null)
     const cnewpasswordref = useRef(null)
 
-    const [newPassword, setNewPassword] = useState('');
+    const [newpassword, setNewpassword] = useState('');
 
 
     const navigate = useNavigate()
@@ -31,89 +31,108 @@ function Change_dev_password_form() {
     const passwordChange = () => {
 
 
-        let data = {
-            "password":passwordref.current.value,
-        }
-          
-          
-        var token = localStorage.getItem('auth_token');
+      if(passwordref.current.value && newpasswordref.current.value && cnewpasswordref.current.value){
 
-        console.log(token)
-
-        const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${token}`
-        };
-
-
-        axios.post("http://127.0.0.1:8000/check_password/",data, {headers})
-            .then(response => {
-                
-                console.log(response.data);
-
-                if(newpasswordref.current.value === cnewpasswordref.current.value){
-
-                    const specialCharactersRegex = /[!@#$%^&*(),.?":{}|<>]/g;
-        
-                    const numberRegex = /\d/;  // \d matches any digit (0-9)
-        
-                    const capitalLetterRegex = /[A-Z]/;
-
-                    setNewPassword(newpasswordref.current.value)
-        
-                    if(newPassword.length < 8){
-                        alert("password must contain minimum 8 characters")
-                    }
-                    else if(specialCharactersRegex.test(newpasswordref.current.value)){
-                        alert("password must contain special character")
-                    }
-        
-                    else if(numberRegex.test(newpasswordref.current.value)){
-                        alert("password must contain numbers")
-                    }
-        
-                    else if(capitalLetterRegex.test(newpasswordref.current.value)){
-                        alert("password must contain capital letter")
-                    }
-        
-                    else{
-
-                        let data = {
-                            "newpassword":newpasswordref.current.value
-                
-                          }
-                          
-                        var token = localStorage.getItem('auth_token');
-
-                        console.log(token)
-
-                        const headers = {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Token ${token}`
-        };
-                        axios.put("http://127.0.0.1:8000/change_password/", data, headers)
-                            .then((res) => {
-                            console.log(res.data)
-                            navigate('/developer')
-                        })
-                
-                            .catch((err) => {
-                            console.log(err)
-                            })
-                    }
-        
+            let data = {
+              "password":passwordref.current.value,
+          }
             
+            
+          var token = localStorage.getItem('auth_token');
+
+          console.log(token)
+
+          const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
+          };
+
+
+          axios.post("http://127.0.0.1:8000/check_password/",data, {headers})
+              .then(response => {
+
+                console.log(response.data)
                   
-            
-                      
-                }
-                else{
-                  alert("Enter all field")
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching profile details:', error);
-            });
+
+                  if(newpasswordref.current.value === cnewpasswordref.current.value){
+
+                      const specialCharactersRegex = /[!@#$%^&*(),.?":{}|<>]/g;
+          
+                      const numberRegex = /\d/;  // \d matches any digit (0-9)
+          
+                      const capitalLetterRegex = /[A-Z]/;
+
+                      // setNewpassword(newpasswordref.current.value)
+
+                      var passwordval = newpasswordref.current.value
+          
+                      if(passwordval.length < 8){
+                        console.log(newpassword)
+                        alert("password must contain minimum 8 characters")
+                      }
+                      else if( !specialCharactersRegex.test(newpasswordref.current.value)){
+                          alert("password must contain special character")
+                      }
+          
+                      else if( !numberRegex.test(newpasswordref.current.value)){
+                          alert("password must contain numbers")
+                      }
+          
+                      else if( !capitalLetterRegex.test(newpasswordref.current.value)){
+                          alert("password must contain capital letter")
+                      }
+          
+                      else{
+
+                          let data = {
+                              "newpassword":newpasswordref.current.value
+                  
+                            }
+                            
+                          var token = localStorage.getItem('auth_token');
+
+                          console.log(token)
+
+                          const headers = {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Token ${token}`
+          };
+                          axios.post("http://127.0.0.1:8000/change_password/", data, headers)
+                              .then((res) => {
+                              console.log(res.data)
+                          })
+                  
+                              .catch((err) => {
+                              console.log(err)
+                              })
+                      }
+          
+              
+                    
+              
+                        
+                  }
+                  else{
+                    alert(" New Password and conform password is not matching ")
+                  }
+              })
+              .catch(error => {
+                alert(" current password is incorrect ")
+              });
+
+      }
+
+      else{
+
+        alert("Enter all field")
+
+
+
+      }
+
+
+
+        
 
 
   

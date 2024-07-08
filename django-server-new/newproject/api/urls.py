@@ -22,7 +22,9 @@ urlpatterns = [
     path('developer_profile/', views.developer_profile, name='developer_profile'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('check_password/', views.check_password, name='check_password'),
-    path('change_password/', views.change_password, name ='change_password')
+    path('change_password/', views.change_password, name ='change_password'),
+    path('teamlead_profile/', views.teamlead_profile, name='teamlead_profile'),
+    
     
     
 ]

@@ -13,6 +13,7 @@ from django.core import serializers
 import json
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User, auth
 
 
 
@@ -422,27 +423,47 @@ def edit_profile(request):
 def check_password(request):
     token = request.headers.get('Authorization')
     if not token:
-        return Response({'error': 'Token not provided'}, status=400)
+        return JsonResponse({'error': 'Token not provided'}, status=400)
 
     token = token.split(' ')[1] if ' ' in token else token
 
     pword = request.data.get('password')
     if not pword:
-        return Response({'error': 'Password not provided'}, status=400)
+        return JsonResponse({'error': 'Password not provided'}, status=400)
 
     try:
         token_obj = Token.objects.get(key=token)
         user = token_obj.user  # This is your user instance
-        if check_password(pword, user.password):
-            return Response({'True': 'Password is matching'})
+
+        uname = user.username
+
+        serialiser = UserLogInSerialisers(data = user)
+
+        if serialiser.is_valid():
+
+
+            user2 = auth.authenticate(request,username=uname,password=pword)
+
+            if user2 is not None:
+                return JsonResponse({'success': 'Password is correct'})
+            
+            else:
+                return JsonResponse({'error': 'Password is not incorrect'}, status=400)
+
+            # if check_password(pword, user.password):
+            #     return JsonResponse({'True': 'Password is matching'})
+            # else:
+            #     return JsonResponse({'False': 'Password is not matching'})
+
         else:
-            return Response({'False': 'Password is not matching'})
+            return JsonResponse(serialiser.errors)
+
         
     except Token.DoesNotExist:
-        return Response({'error': 'Invalid token'}, status=400)
+        return JsonResponse({'error': 'Invalid token'}, status=400)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def change_password(request):
 
     token = request.headers.get('Authorization')
@@ -456,9 +477,29 @@ def change_password(request):
     try:
         token_obj = Token.objects.get(key=token)
         user_dev = token_obj.user  # This is your CustomUser instance
-        user_dev.password = npword
+        # user_dev.password = npword
+        user_dev.set_password(npword)
         return JsonResponse({'success': 'password changed successfully'})
  
+    except Token.DoesNotExist:
+        return JsonResponse({'error': 'Invalid token'}, status=400)
+
+
+@api_view(['GET'])
+def teamlead_profile(request):
+    token = request.headers.get('Authorization')
+    if not token:
+        return JsonResponse({'error': 'Token not provided'}, status=400)
+
+    token = token.split(' ')[1] if ' ' in token else token
+
+    try:
+        token_obj = Token.objects.get(key=token)
+        user_tl = token_obj.user  # This is your CustomUser instance
+        tl = developers.objects.get(user = user_tl)
+
+        serializer = RegSerializer(tl)
+        return JsonResponse(serializer.data, safe=False)
     except Token.DoesNotExist:
         return JsonResponse({'error': 'Invalid token'}, status=400)
 
